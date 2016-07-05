@@ -10,10 +10,19 @@ funcSum(){
 }
 
 funcGetIP(){
-	ret=$(ip addr)	
+	if [ $# -ne 1 ];then
+		echo "must input one param!"
+		return 1
+	else
+		ret=$(ifconfig |egrep "^\s+inet\s+addr:"|sed -r "s/^\s+inet\s+addr://g"|sed -r "s/\s+Bcast:.*$//g")
+		echo ${ret}
+	fi	
 }
 
 #ret=`funcSum 1 100`
 #ret=$?
 
 #echo ${ret}
+
+test=$(funcGetIP eth0)
+echo "the ip addr is:${test};."
